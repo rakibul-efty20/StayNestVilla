@@ -3,6 +3,7 @@ using Scalar.AspNetCore;
 using StayNestVilla_API.DataBase;
 using StayNestVilla_API.DTO;
 using StayNestVilla_API.Models;
+using StayNestVilla_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +17,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
 builder.Services.AddAutoMapper(o =>
 {
     o.CreateMap<Villa,VillaCreateDTO>().ReverseMap();
     o.CreateMap<Villa, VillaUpdateDTO>().ReverseMap();
     o.CreateMap<Villa, VillaDTO>().ReverseMap();
     o.CreateMap<VillaUpdateDTO, VillaDTO>().ReverseMap();
+    o.CreateMap<User, UserDTO>().ReverseMap();
 });
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+
 var app = builder.Build();
 await SeedDataAsync(app);
 // Configure the HTTP request pipeline.

@@ -2,7 +2,7 @@
 
 namespace StayNestVilla_API.DTO
 {
-    public class LoginRequest
+    public class LoginRequestDTO
     {
         [Required]
         [EmailAddress]
