@@ -46,14 +46,37 @@ namespace StayNestVilla_API.Services
           
         }
 
-        public Task<LoginResponseDTO> LoginAsync(LoginRequestDTO loginRequestDTO)
+        public async Task<LoginResponseDTO> LoginAsync(LoginRequestDTO loginRequestDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user =
+                    await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == loginRequestDTO.Email.ToLower());
+
+                if (user == null || user.Passward != loginRequestDTO.Passward)
+                {
+                    return null;
+                }
+
+                //generate jwt token
+
+
+                return new LoginResponseDTO()
+                {
+                    UserDTO = _mapper.Map<UserDTO>(user),
+                    Token = ""
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("An unexpected error occured during user login", ex);
+            }
+
         }
 
         public async Task<bool> IsEmailExistsAsync(string email)
         {
-            return await _db.Users.AnyAsync(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            return await _db.Users.AnyAsync(u => u.Email.ToLower()==email.ToLower());
         }
     }
 }

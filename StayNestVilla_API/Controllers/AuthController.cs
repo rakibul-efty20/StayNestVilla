@@ -11,8 +11,8 @@ namespace StayNestVilla_API.Controllers
     {
         private readonly IAuthService _authService = authService;
 
-        [HttpGet]
-        public async Task<ActionResult<ApiResponse<UserDTO>>> Register(RegistrationRequestDTO registrationRequestDTO)
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDTO>>> Register([FromBody]RegistrationRequestDTO registrationRequestDTO)
         {
             try
             {
